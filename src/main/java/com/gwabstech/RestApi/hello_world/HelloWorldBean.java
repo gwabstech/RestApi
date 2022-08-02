@@ -1,4 +1,4 @@
-package com.gwabstech.RestApi;
+package com.gwabstech.RestApi.hello_world;
 
 public class HelloWorldBean {
     private String message;
