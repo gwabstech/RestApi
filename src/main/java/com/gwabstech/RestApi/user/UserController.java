@@ -1,15 +1,18 @@
 package com.gwabstech.RestApi.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.Date;
+import java.net.URI;
 import java.util.List;
 
 @RestController
 public class UserController {
     @Autowired
     private UserDaoService service;
+
     // retrieve all users
     @GetMapping("/all_Users")
     public List<User> getAllUsers(){
@@ -22,9 +25,17 @@ public class UserController {
         return service.findUserById(id);
     }
 
-    @PostMapping("/newUser")
-    public void addUser(@RequestBody User user){
-        service.addUser(user);
-    }
+
+
     // add user
+    @PostMapping("/newUser")
+    public ResponseEntity<Object> addUser(@RequestBody User user){
+
+       User savedUser =  service.addUser(user);
+       URI location =ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId()).toUri();
+
+       return ResponseEntity.created(location).build();
+    }
+
 }
+
